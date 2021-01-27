@@ -1,7 +1,5 @@
-import Layout from "../components/Layout";
-import Login from "../components/login";
-
-import "tailwindcss/tailwind.css";
+import Layout from '../components/Layout';
+import Login from '../components/login';
 
 const IndexPage = () => (
   <Layout title="Home | Next.js + TypeScript Example">
