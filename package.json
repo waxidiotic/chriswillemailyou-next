@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "evergreen-ui": "^5.1.2",
+    "firebase": "^8.2.5",
     "next": "^10.0.5",
     "postcss": "^8.2.4",
     "react": "17.0.1",

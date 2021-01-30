@@ -1,16 +1,17 @@
+import { useState, FormEvent } from 'react';
 import {
   Button,
   Heading,
+  IconButton,
   Pane,
   SegmentedControl,
   TextInputField,
+  ArrowLeftIcon,
 } from 'evergreen-ui';
-import { useState, FormEvent } from 'react';
+import { LoginMethod, AuthAction } from './types';
+import { login, register, resetPassword } from './utils';
 
-type LoginMethod = 'PASSWORD' | 'MAGIC_LINK';
-type AuthAction = 'LOGIN' | 'REGISTER' | 'RESET_PASSWORD';
-
-const getHeadingText = (authAction: AuthAction) => {
+const getAuthActionText = (authAction: AuthAction) => {
   switch (authAction) {
     case 'REGISTER':
       return 'Register';
@@ -27,6 +28,7 @@ const Login = () => {
   const [password, setPassword] = useState<string>('');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>('PASSWORD');
   const [authAction, setAuthAction] = useState<AuthAction>('LOGIN');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <Pane
@@ -46,7 +48,16 @@ const Login = () => {
         flexDirection="column"
         background="tint1"
       >
-        <Heading size={700}>{getHeadingText(authAction)}</Heading>
+        {authAction !== 'LOGIN' ? (
+          <IconButton
+            icon={ArrowLeftIcon}
+            marginBottom={16}
+            onClick={() => setAuthAction('LOGIN')}
+          />
+        ) : null}
+        <Heading size={700} marginBottom={authAction !== 'LOGIN' ? 24 : 0}>
+          {getAuthActionText(authAction)}
+        </Heading>
         {authAction === 'LOGIN' ? (
           <SegmentedControl
             width={300}
@@ -54,7 +65,7 @@ const Login = () => {
             value={loginMethod}
             options={[
               { label: 'Login with Password', value: 'PASSWORD' },
-              { label: 'Request Login Email', value: 'MAGIC_LINK' },
+              // { label: 'Request Login Email', value: 'MAGIC_LINK' },
             ]}
             onChange={(value) => setLoginMethod(value as LoginMethod)}
           />
@@ -83,23 +94,43 @@ const Login = () => {
             required
           />
         ) : null}
-        <Button appearance="primary" marginBottom={16}>
-          Login
+        <Button
+          appearance="primary"
+          marginBottom={16}
+          isLoading={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+            if (authAction === 'LOGIN') {
+              login(loginMethod, emailAddress, password).then(() =>
+                setIsLoading(false)
+              );
+            } else if (authAction === 'REGISTER') {
+              register(emailAddress, password).then(() => setIsLoading(false));
+            } else {
+              resetPassword(emailAddress).then(() => setIsLoading(false));
+            }
+          }}
+        >
+          {getAuthActionText(authAction)}
         </Button>
-        <Pane display="flex">
-          <Button
-            appearance="minimal"
-            onClick={() => setAuthAction('RESET_PASSWORD')}
-          >
-            Reset Password
-          </Button>
-          <Button
-            appearance="minimal"
-            onClick={() => setAuthAction('REGISTER')}
-          >
-            Register
-          </Button>
-        </Pane>
+        {authAction !== 'RESET_PASSWORD' ? (
+          <Pane display="flex">
+            <Button
+              appearance="minimal"
+              onClick={() => setAuthAction('RESET_PASSWORD')}
+            >
+              Reset Password
+            </Button>
+            {authAction !== 'REGISTER' ? (
+              <Button
+                appearance="minimal"
+                onClick={() => setAuthAction('REGISTER')}
+              >
+                Register
+              </Button>
+            ) : null}
+          </Pane>
+        ) : null}
       </Pane>
     </Pane>
   );
