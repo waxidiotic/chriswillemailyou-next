@@ -13,7 +13,7 @@ const login = async (method: LoginMethod, email: string, password?: string) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 };
@@ -22,7 +22,7 @@ const register = async (email: string, password: string) => {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -30,7 +30,7 @@ const resetPassword = async (email: string) => {
   try {
     await firebase.auth().sendPasswordResetEmail(email);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 

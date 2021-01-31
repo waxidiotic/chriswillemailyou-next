@@ -7,8 +7,9 @@ import {
   SegmentedControl,
   TextInputField,
   ArrowLeftIcon,
+  Alert,
 } from 'evergreen-ui';
-import { LoginMethod, AuthAction } from './types';
+import { LoginMethod, AuthAction, AuthError } from './types';
 import { login, register, resetPassword } from './utils';
 
 const getAuthActionText = (authAction: AuthAction) => {
@@ -29,6 +30,33 @@ const Login = () => {
   const [loginMethod, setLoginMethod] = useState<LoginMethod>('PASSWORD');
   const [authAction, setAuthAction] = useState<AuthAction>('LOGIN');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<AuthError>();
+
+  const handleFormAction = async () => {
+    setIsLoading(true);
+
+    if (authAction === 'LOGIN') {
+      try {
+        await login(loginMethod, emailAddress, password);
+      } catch (error) {
+        setHasError(error);
+      }
+    } else if (authAction === 'REGISTER') {
+      try {
+        await register(emailAddress, password);
+      } catch (error) {
+        setHasError(error);
+      }
+    } else {
+      try {
+        await resetPassword(emailAddress);
+      } catch (error) {
+        setHasError(error);
+      }
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <Pane
@@ -41,7 +69,7 @@ const Login = () => {
       <Pane
         elevation={1}
         width={400}
-        height={400}
+        paddingY={24}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -94,22 +122,18 @@ const Login = () => {
             required
           />
         ) : null}
+        {hasError ? (
+          <Pane width={300}>
+            <Alert intent="danger" title="Error" marginBottom={24}>
+              {hasError.message}
+            </Alert>
+          </Pane>
+        ) : null}
         <Button
           appearance="primary"
           marginBottom={16}
           isLoading={isLoading}
-          onClick={() => {
-            setIsLoading(true);
-            if (authAction === 'LOGIN') {
-              login(loginMethod, emailAddress, password).then(() =>
-                setIsLoading(false)
-              );
-            } else if (authAction === 'REGISTER') {
-              register(emailAddress, password).then(() => setIsLoading(false));
-            } else {
-              resetPassword(emailAddress).then(() => setIsLoading(false));
-            }
-          }}
+          onClick={handleFormAction}
         >
           {getAuthActionText(authAction)}
         </Button>
