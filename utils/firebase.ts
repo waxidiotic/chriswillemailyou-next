@@ -10,7 +10,11 @@ const firebaseConfig = {
 };
 
 const initFirebase = () => {
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    firebase.app();
+  }
 };
 
 export { initFirebase };
