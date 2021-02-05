@@ -1,7 +1,7 @@
 import Layout from '@components/Layout';
-import Login from '@components/login';
-import { useUser } from '@context/userContext';
+import Login from '@components/Login';
 import initFirebase from '@utils/firebase';
+import { useUser } from '@context/userContext';
 
 initFirebase();
 

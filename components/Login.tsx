@@ -1,4 +1,5 @@
 import { useState, FormEvent } from 'react';
+import firebase from 'firebase';
 import {
   Button,
   Heading,
@@ -9,8 +10,10 @@ import {
   Alert,
 } from 'evergreen-ui';
 
-import { AuthAction, AuthError } from './types';
 import { login, register, resetPassword } from './utils';
+
+export type AuthAction = 'LOGIN' | 'REGISTER' | 'RESET_PASSWORD';
+export type AuthError = firebase.auth.Error;
 
 const getAuthActionText = (authAction: AuthAction) => {
   switch (authAction) {
