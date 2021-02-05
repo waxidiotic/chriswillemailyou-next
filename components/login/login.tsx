@@ -4,13 +4,12 @@ import {
   Heading,
   IconButton,
   Pane,
-  SegmentedControl,
   TextInputField,
   ArrowLeftIcon,
   Alert,
 } from 'evergreen-ui';
 
-import { LoginMethod, AuthAction, AuthError } from './types';
+import { AuthAction, AuthError } from './types';
 import { login, register, resetPassword } from './utils';
 
 const getAuthActionText = (authAction: AuthAction) => {
@@ -28,7 +27,6 @@ const getAuthActionText = (authAction: AuthAction) => {
 export default function Login() {
   const [emailAddress, setEmailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [loginMethod, setLoginMethod] = useState<LoginMethod>('PASSWORD');
   const [authAction, setAuthAction] = useState<AuthAction>('LOGIN');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<AuthError>();
@@ -38,7 +36,7 @@ export default function Login() {
 
     if (authAction === 'LOGIN') {
       try {
-        await login(loginMethod, emailAddress, password);
+        await login(emailAddress, password);
       } catch (error) {
         setHasError(error);
       }
@@ -84,21 +82,9 @@ export default function Login() {
             onClick={() => setAuthAction('LOGIN')}
           />
         ) : null}
-        <Heading size={700} marginBottom={authAction !== 'LOGIN' ? 24 : 0}>
+        <Heading size={700} marginBottom={24}>
           {getAuthActionText(authAction)}
         </Heading>
-        {authAction === 'LOGIN' ? (
-          <SegmentedControl
-            width={300}
-            margin={24}
-            value={loginMethod}
-            options={[
-              { label: 'Login with Password', value: 'PASSWORD' },
-              // { label: 'Request Login Email', value: 'MAGIC_LINK' },
-            ]}
-            onChange={(value) => setLoginMethod(value as LoginMethod)}
-          />
-        ) : null}
         <TextInputField
           id="email"
           value={emailAddress}
@@ -110,7 +96,7 @@ export default function Login() {
           }
           required
         />
-        {loginMethod === 'PASSWORD' ? (
+        {authAction !== 'RESET_PASSWORD' ? (
           <TextInputField
             id="password"
             value={password}
