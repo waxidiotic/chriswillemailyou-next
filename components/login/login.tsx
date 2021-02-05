@@ -9,6 +9,7 @@ import {
   ArrowLeftIcon,
   Alert,
 } from 'evergreen-ui';
+
 import { LoginMethod, AuthAction, AuthError } from './types';
 import { login, register, resetPassword } from './utils';
 
@@ -24,7 +25,7 @@ const getAuthActionText = (authAction: AuthAction) => {
   }
 };
 
-const Login = () => {
+export default function Login() {
   const [emailAddress, setEmailAddress] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [loginMethod, setLoginMethod] = useState<LoginMethod>('PASSWORD');
@@ -158,6 +159,4 @@ const Login = () => {
       </Pane>
     </Pane>
   );
-};
-
-export default Login;
+}
