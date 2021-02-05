@@ -17,4 +17,4 @@ const initFirebase = () => {
   }
 };
 
-export { initFirebase };
+export default initFirebase;

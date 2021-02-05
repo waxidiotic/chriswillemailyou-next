@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { sampleUserData } from '../../../utils/sample-data';
 
-const handler = (_req: NextApiRequest, res: NextApiResponse) => {
+import sampleUserData from '@utils/sample-data';
+
+export default function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
     if (!Array.isArray(sampleUserData)) {
       throw new Error('Cannot find user data');
@@ -11,6 +12,4 @@ const handler = (_req: NextApiRequest, res: NextApiResponse) => {
   } catch (err) {
     res.status(500).json({ statusCode: 500, message: err.message });
   }
-};
-
-export default handler;
+}

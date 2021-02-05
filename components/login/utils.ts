@@ -1,4 +1,6 @@
+/* eslint-disable no-useless-catch */
 import firebase from 'firebase';
+
 import 'firebase/auth';
 import { LoginMethod } from './types';
 

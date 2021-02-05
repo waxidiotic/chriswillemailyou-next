@@ -1,11 +1,11 @@
-import Layout from '../components/Layout';
-import Login from '../components/login';
-import { useUser } from '../context/userContext';
-import { initFirebase } from '../utils/firebase';
+import Layout from '@components/Layout';
+import Login from '@components/login';
+import { useUser } from '@context/userContext';
+import initFirebase from '@utils/firebase';
 
 initFirebase();
 
-const IndexPage = () => {
+export default function IndexPage() {
   const { loadingUser, user } = useUser();
 
   return (
@@ -13,6 +13,4 @@ const IndexPage = () => {
       {!loadingUser && !user ? <Login /> : <p>Logged in</p>}
     </Layout>
   );
-};
-
-export default IndexPage;
+}

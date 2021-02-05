@@ -21,7 +21,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // listen for authenticated user
-    const unsubscriber = firebase.auth().onAuthStateChanged(async (user) => {
+    const unsubscriber = firebase.auth().onAuthStateChanged(async () => {
       try {
         if (user) {
           // user is signed in
@@ -51,7 +51,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
     // unsubscribe auth listener on unmount
     return () => unsubscriber();
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser, loadingUser }}>

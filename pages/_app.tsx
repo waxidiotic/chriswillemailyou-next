@@ -1,12 +1,13 @@
 import { FC } from 'react';
-import UserProvider from '../context/userContext';
+
+import UserProvider from '@context/userContext';
 
 export default function App({
   Component,
   pageProps,
 }: {
   Component: FC;
-  pageProps: any;
+  pageProps: {};
 }) {
   return (
     <UserProvider>
