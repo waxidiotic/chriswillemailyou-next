@@ -1,6 +1,7 @@
 import Layout from '@components/Layout';
 import Login from '@components/Login';
 import initFirebase from '@utils/firebase';
+import FullPageSpinner from '@components/FullPageSpinner';
 import { useUser } from '@context/userContext';
 
 initFirebase();
@@ -10,7 +11,8 @@ export default function IndexPage() {
 
   return (
     <Layout title="Chris Will Email You">
-      {!loadingUser && !user ? <Login /> : <p>Logged in</p>}
+      {loadingUser && <FullPageSpinner />}
+      {!loadingUser && !user && <Login />}
     </Layout>
   );
 }
