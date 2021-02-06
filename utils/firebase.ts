@@ -1,12 +1,12 @@
 import firebase from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB8DCwaHNg6Pt3dx3pY_yU0UEiI7Z5SRpo',
-  authDomain: 'chris-will-email-you.firebaseapp.com',
-  projectId: 'chris-will-email-you',
-  storageBucket: 'chris-will-email-you.appspot.com',
-  messagingSenderId: '31833860312',
-  appId: '1:31833860312:web:9be96501291dd93bf28fad',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 const initFirebase = () => {
@@ -16,5 +16,7 @@ const initFirebase = () => {
     firebase.app();
   }
 };
+
+export const isProduction = process.env.NODE_ENV === 'production';
 
 export default initFirebase;

@@ -16,6 +16,13 @@ export default function Layout({
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <style>
+          {`
+            body {
+              margin: 0;
+            }
+          `}
+        </style>
       </Head>
       {children}
     </div>

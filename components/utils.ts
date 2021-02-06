@@ -11,6 +11,10 @@ const login = async (email: string, password: string) => {
   }
 };
 
+const logout = async () => {
+  await firebase.auth().signOut();
+};
+
 const register = async (email: string, password: string) => {
   try {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -27,4 +31,4 @@ const resetPassword = async (email: string) => {
   }
 };
 
-export { login, register, resetPassword };
+export { login, logout, register, resetPassword };
