@@ -21,37 +21,40 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // listen for authenticated user
-    const unsubscriber = firebase.auth().onAuthStateChanged(async () => {
-      try {
-        if (user) {
-          // user is signed in
-          const {
-            uid,
-            displayName,
-            email,
-            phoneNumber,
-            photoURL,
-            providerId,
-          } = user;
-          setUser({
-            uid,
-            displayName,
-            email,
-            phoneNumber,
-            photoURL,
-            providerId,
-          });
-        } else setUser(null);
-      } catch (error) {
-        // probably a connection error, handle accordingly
-      } finally {
-        setLoadingUser(false);
-      }
-    });
+    const unsubscriber = firebase
+      .auth()
+      .onAuthStateChanged(async (rawUser: firebase.User | null) => {
+        try {
+          if (rawUser) {
+            // user is signed in
+            const {
+              uid,
+              displayName,
+              email,
+              phoneNumber,
+              photoURL,
+              providerId,
+            } = rawUser;
+            setUser({
+              uid,
+              displayName,
+              email,
+              phoneNumber,
+              photoURL,
+              providerId,
+            });
+          } else setUser(null);
+        } catch (error) {
+          // probably a connection error, handle accordingly
+          console.error(error);
+        } finally {
+          setLoadingUser(false);
+        }
+      });
 
     // unsubscribe auth listener on unmount
     return () => unsubscriber();
-  }, [user]);
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser, loadingUser }}>
