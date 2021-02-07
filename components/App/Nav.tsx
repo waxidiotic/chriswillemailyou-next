@@ -1,4 +1,5 @@
 import { IconButton, LogOutIcon, Pane, Strong, Text } from 'evergreen-ui';
+
 import { logout } from '@components/utils';
 
 export default function Nav() {

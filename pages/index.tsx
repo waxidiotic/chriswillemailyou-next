@@ -1,25 +1,28 @@
+import { Pane, Portal, Text } from 'evergreen-ui';
+
 import Layout from '@components/Layout';
 import Login from '@components/Login';
 import initFirebase, { isProduction } from '@utils/firebase';
 import FullPageSpinner from '@components/FullPageSpinner';
 import AuthenticatedApp from '@components/App/AuthenticatedApp';
 import { useUser } from '@context/userContext';
-import { Pane, Portal, Text } from 'evergreen-ui';
 
 initFirebase();
 
-export default function IndexPage() {
+const RouteToRender = () => {
   const { loadingUser, user } = useUser();
 
+  if (loadingUser) {
+    return <FullPageSpinner />;
+  }
+
+  return user ? <AuthenticatedApp /> : <Login />;
+};
+
+export default function IndexPage() {
   return (
     <Layout title="Chris Will Email You">
-      {loadingUser ? (
-        <FullPageSpinner />
-      ) : !user ? (
-        <Login />
-      ) : (
-        <AuthenticatedApp />
-      )}
+      <RouteToRender />
       {!isProduction && (
         <Portal>
           <Pane

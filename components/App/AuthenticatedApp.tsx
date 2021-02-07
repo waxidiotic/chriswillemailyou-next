@@ -1,4 +1,5 @@
 import { Pane } from 'evergreen-ui';
+
 import DataTable from './DataTable';
 import Nav from './Nav';
 
